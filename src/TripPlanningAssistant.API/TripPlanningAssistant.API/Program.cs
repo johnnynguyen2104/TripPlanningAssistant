@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Options;
+using Supabase;
 using TripPlanningAssistant.API.Options;
 
 namespace TripPlanningAssistant.API
@@ -12,6 +14,15 @@ namespace TripPlanningAssistant.API
 
             builder.Services.AddControllers();
             builder.Services.Configure<AWSBedrockConfigOptions>(builder.Configuration.GetSection(nameof(AWSBedrockConfigOptions)));
+            builder.Services.Configure<SupabaseDbOptions>(builder.Configuration.GetSection(nameof(SupabaseDbOptions)));
+
+            builder.Services.AddTransient((provider) =>
+            {
+                var option = provider.GetService<IOptions<SupabaseDbOptions>>();
+                return option.Value.SupabaseOptions is null 
+                    ? new Client(option.Value.SupabaseUrl, option.Value.SupabaseKey) 
+                    : new Client(option.Value.SupabaseUrl, option.Value.SupabaseKey, option.Value.SupabaseOptions);
+            });
 
             var app = builder.Build();
 
