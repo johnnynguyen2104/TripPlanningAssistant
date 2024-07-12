@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
 using Supabase;
 using TripPlanningAssistant.API.Options;
+using TripPlanningAssistant.API.Services;
 
 namespace TripPlanningAssistant.API
 {
@@ -27,6 +28,8 @@ namespace TripPlanningAssistant.API
                     ? new Client(option.Value.SupabaseUrl, option.Value.SupabaseKey) 
                     : new Client(option.Value.SupabaseUrl, option.Value.SupabaseKey, option.Value.SupabaseOptions);
             });
+
+            builder.Services.AddTransient<AWSBedrockService>();
 
             var app = builder.Build();
 

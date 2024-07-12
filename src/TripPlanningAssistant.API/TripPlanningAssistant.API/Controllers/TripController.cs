@@ -26,12 +26,14 @@ namespace TripPlanningAssistant.API.Controllers
         {
             var inputEmbedding = await _awsBedrockService.GenerateEmbeddingsResponseAsync(input);
 
-            var result = _client.Rpc("match_attractions", new 
+            var result = await _client.Rpc("match_documents", new 
             {
                 query_embedding = inputEmbedding, // pass the query embedding
-                match_threshold = 0.78, // choose an appropriate threshold for your data
+                match_threshold = 0.2, // choose an appropriate threshold for your data
                 match_count = 10, // choose the number of matches
             });
+
+            var a = result.Content;
         }
     }
 }
