@@ -24,7 +24,7 @@ namespace TripPlanningAssistant.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<string>> Get(string input, Single matchThreshold = 0.5f, int count = 10)
+        public async Task<IEnumerable<string>> SematicSearch(string input, Single matchThreshold = 0.5f, int count = 10)
         {
             var inputEmbedding = await _awsBedrockService.GenerateEmbeddingsResponseAsync(input);
 
