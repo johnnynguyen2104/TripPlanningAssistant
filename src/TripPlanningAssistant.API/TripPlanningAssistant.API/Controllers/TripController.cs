@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using Supabase;
+using TripPlanningAssistant.API.Services;
 
 namespace TripPlanningAssistant.API.Controllers
 {
@@ -6,28 +8,30 @@ namespace TripPlanningAssistant.API.Controllers
     [Route("[controller]")]
     public class TripController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
         private readonly ILogger<TripController> _logger;
+        private readonly Client _client;
+        private readonly AWSBedrockService _awsBedrockService;
 
-        public TripController(ILogger<TripController> logger)
+        public TripController(ILogger<TripController> logger, 
+            Client client,
+            AWSBedrockService awsBedrockService)
         {
             _logger = logger;
+            _client = client;
+            _awsBedrockService = awsBedrockService;
         }
 
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public async Task Get(string input)
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            var inputEmbedding = await _awsBedrockService.GenerateEmbeddingsResponseAsync(input);
+
+            var result = _client.Rpc("match_attractions", new 
             {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+                query_embedding = inputEmbedding, // pass the query embedding
+                match_threshold = 0.78, // choose an appropriate threshold for your data
+                match_count = 10, // choose the number of matches
+            });
         }
     }
 }
