@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Supabase;
 using System.Text.Json;
-using TripPlanningAssistant.API.Models;
+using TripPlanningAssistant.Lambda.Models;
 using TripPlanningAssistant.API.Services;
 
-namespace TripPlanningAssistant.API.Controllers
+namespace TripPlanningAssistant.Lambda.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class TripController : ControllerBase
     {
         private readonly ILogger<TripController> _logger;
@@ -24,11 +24,11 @@ namespace TripPlanningAssistant.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<string>> SematicSearch(string input, Single matchThreshold = 0.5f, int count = 10)
+        public async Task<IEnumerable<string>> SematicSearch(string input, string targetFunction, Single matchThreshold = 0.5f, int count = 10)
         {
             var inputEmbedding = await _awsBedrockService.GenerateEmbeddingsResponseAsync(input);
 
-            var result = await _client.Rpc("match_documents", new 
+            var result = await _client.Rpc(targetFunction, new 
             {
                 query_embedding = inputEmbedding, // pass the query embedding
                 match_threshold = matchThreshold, // choose an appropriate threshold for your data
@@ -37,32 +37,6 @@ namespace TripPlanningAssistant.API.Controllers
 
             var convertedResult = JsonSerializer.Deserialize<IEnumerable<BaseModel>>(result.Content ?? "");
             return convertedResult?.Select(x => x.sentences) ?? new List<string>();
-        }
-
-        [HttpPost("attractions")]
-        public async Task<bool> EmbedAttractions(string input)
-        {
-            var result = await _awsBedrockService.GenerateEmbeddingsResponseAsync(input);
-            var data = new Attraction()
-            {
-                Sentences = input,
-                Embedding = result
-            };
-            var response = _client.From<Attraction>().Insert(data);
-            return response.IsCompletedSuccessfully;
-        }
-
-        [HttpPost("flights")]
-        public async Task<bool> EmbedFlightCosts(string input)
-        {
-            var result = await _awsBedrockService.GenerateEmbeddingsResponseAsync(input);
-            var data = new FlightCost()
-            {
-                Sentences = input,
-                Embedding = result
-            };
-            var response = _client.From<FlightCost>().Insert(data);
-            return response.IsCompletedSuccessfully;
         }
     }
 }
