@@ -3,10 +3,12 @@ using Supabase;
 using System.Text.Json;
 using TripPlanningAssistant.Lambda.Models;
 using TripPlanningAssistant.API.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TripPlanningAssistant.Lambda.Controllers
 {
     [ApiController]
+    [AllowAnonymous]
     [Route("api/[controller]")]
     public class TripController : ControllerBase
     {
