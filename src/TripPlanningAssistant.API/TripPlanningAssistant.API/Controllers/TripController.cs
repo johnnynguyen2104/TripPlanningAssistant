@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Supabase;
+using System.Text.Json;
+using TripPlanningAssistant.API.Models;
 using TripPlanningAssistant.API.Services;
 
 namespace TripPlanningAssistant.API.Controllers
@@ -22,7 +24,7 @@ namespace TripPlanningAssistant.API.Controllers
         }
 
         [HttpGet]
-        public async Task Get(string input, Single matchThreshold = 0.5f, int count = 10)
+        public async Task<IEnumerable<string>> Get(string input, Single matchThreshold = 0.5f, int count = 10)
         {
             var inputEmbedding = await _awsBedrockService.GenerateEmbeddingsResponseAsync(input);
 
@@ -33,7 +35,8 @@ namespace TripPlanningAssistant.API.Controllers
                 match_count = count, // choose the number of matches
             });
 
-            var a = result.Content;
+            var convertedResult = JsonSerializer.Deserialize<IEnumerable<BaseModel>>(result.Content ?? "");
+            return convertedResult?.Select(x => x.sentences) ?? new List<string>();
         }
     }
 }
