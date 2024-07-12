@@ -25,7 +25,7 @@ namespace TripPlanningAssistant.Lambda.Controllers
             _awsBedrockService = awsBedrockService;
         }
 
-        [HttpGet]
+        [HttpGet("sematic_search")]
         public async Task<IEnumerable<string>> SematicSearch(string input, string targetFunction, Single matchThreshold = 0.5f, int count = 10)
         {
             var inputEmbedding = await _awsBedrockService.GenerateEmbeddingsResponseAsync(input);

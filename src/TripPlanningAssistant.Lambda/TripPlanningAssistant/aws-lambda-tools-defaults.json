@@ -1,0 +1,29 @@
+
+{
+    "Information" : [
+        "This file provides default values for the deployment wizard inside Visual Studio and the AWS Lambda commands added to the .NET Core CLI.",
+        "To learn more about the Lambda commands with the .NET Core CLI execute the following command at the command line in the project root directory.",
+        "dotnet lambda help",
+        "All the command line options for the Lambda command can be specified in this file."
+    ],
+    "profile"     : "aws-hackathon-2024",
+    "region"      : "us-west-2",
+    "configuration" : "Release",
+    "package-type"  : "Zip",
+    "function-memory-size" : 512,
+    "function-timeout"     : 30,
+    "image-command"        : "TripPlanningAssistant::TripPlanningAssistant.Function::FunctionHandler",
+    "docker-host-build-output-dir" : "./bin/Release/lambda-publish",
+    "framework"                    : "net8.0",
+    "function-name"                : "travel-agent-function",
+    "function-handler"             : "TripPlanningAssistant::TripPlanningAssistant.Function::FunctionHandler",
+    "function-role"                : "arn:aws:iam::681389246788:role/awsupabase-genai-hackathon-AspNetCoreFunctionRole-0LhNfWIA8RIa",
+    "function-runtime"             : "dotnet8",
+    "function-architecture"        : "x86_64",
+    "function-subnets"             : "",
+    "function-security-groups"     : "",
+    "tracing-mode"                 : "PassThrough",
+    "environment-variables"        : "",
+    "dockerfile"                   : "Dockerfile",
+    "image-tag"                    : ""
+}

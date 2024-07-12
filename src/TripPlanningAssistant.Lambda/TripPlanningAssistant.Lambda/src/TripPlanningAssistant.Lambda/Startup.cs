@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using Supabase;
+using TripPlanningAssistant.API.Services;
 using TripPlanningAssistant.Lambda.Options;
 
 namespace TripPlanningAssistant.Lambda
@@ -23,6 +24,7 @@ namespace TripPlanningAssistant.Lambda
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
+            services.AddTransient<AWSBedrockService>();
             services.AddTransient((provider) =>
             {
                 var option = provider.GetService<IOptions<SupabaseDbOptions>>();
@@ -38,9 +40,10 @@ namespace TripPlanningAssistant.Lambda
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI();
 
             app.UseHttpsRedirection();
 

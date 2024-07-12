@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35027.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TripPlanningAssistant.Lambda", "TripPlanningAssistant.Lambda\src\TripPlanningAssistant.Lambda\TripPlanningAssistant.Lambda.csproj", "{B336B8A2-41B7-435E-AF8F-8220350F2F3C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TripPlanningAssistant.Lambda", "TripPlanningAssistant.Lambda\src\TripPlanningAssistant.Lambda\TripPlanningAssistant.Lambda.csproj", "{B336B8A2-41B7-435E-AF8F-8220350F2F3C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TripPlanningAssistant", "TripPlanningAssistant\TripPlanningAssistant.csproj", "{89AE8BBE-F3FB-4B97-AB4F-1623F8A84CA6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{B336B8A2-41B7-435E-AF8F-8220350F2F3C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B336B8A2-41B7-435E-AF8F-8220350F2F3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B336B8A2-41B7-435E-AF8F-8220350F2F3C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89AE8BBE-F3FB-4B97-AB4F-1623F8A84CA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89AE8BBE-F3FB-4B97-AB4F-1623F8A84CA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89AE8BBE-F3FB-4B97-AB4F-1623F8A84CA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89AE8BBE-F3FB-4B97-AB4F-1623F8A84CA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
