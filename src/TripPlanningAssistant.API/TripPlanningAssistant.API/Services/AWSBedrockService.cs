@@ -17,7 +17,7 @@ namespace TripPlanningAssistant.API.Services
         public AWSBedrockService(IOptions<AWSBedrockConfigOptions> config)
         {
             _config = config.Value;
-            var credentials = new BasicAWSCredentials(_config.AccessKeyId, _config.SecretAccessKey);
+            var credentials = new SessionAWSCredentials(_config.AccessKeyId, _config.SecretAccessKey, _config.Token);
             var region = RegionEndpoint.GetBySystemName(_config.Region);
             _bedrockClient = new AmazonBedrockRuntimeClient(credentials, region);
         }
