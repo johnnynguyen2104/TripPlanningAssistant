@@ -22,15 +22,15 @@ namespace TripPlanningAssistant.API.Controllers
         }
 
         [HttpGet]
-        public async Task Get(string input)
+        public async Task Get(string input, Single matchThreshold = 0.5f, int count = 10)
         {
             var inputEmbedding = await _awsBedrockService.GenerateEmbeddingsResponseAsync(input);
 
             var result = await _client.Rpc("match_documents", new 
             {
                 query_embedding = inputEmbedding, // pass the query embedding
-                match_threshold = 0.2, // choose an appropriate threshold for your data
-                match_count = 10, // choose the number of matches
+                match_threshold = matchThreshold, // choose an appropriate threshold for your data
+                match_count = count, // choose the number of matches
             });
 
             var a = result.Content;
