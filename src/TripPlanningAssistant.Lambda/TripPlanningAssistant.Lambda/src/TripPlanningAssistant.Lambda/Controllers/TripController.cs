@@ -24,11 +24,11 @@ namespace TripPlanningAssistant.Lambda.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<string>> SematicSearch(string input, Single matchThreshold = 0.5f, int count = 10)
+        public async Task<IEnumerable<string>> SematicSearch(string input, string targetFunction, Single matchThreshold = 0.5f, int count = 10)
         {
             var inputEmbedding = await _awsBedrockService.GenerateEmbeddingsResponseAsync(input);
 
-            var result = await _client.Rpc("match_documents", new 
+            var result = await _client.Rpc(targetFunction, new 
             {
                 query_embedding = inputEmbedding, // pass the query embedding
                 match_threshold = matchThreshold, // choose an appropriate threshold for your data
