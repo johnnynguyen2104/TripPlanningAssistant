@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
 using Supabase;
 using TripPlanningAssistant.API.Options;
@@ -16,6 +17,9 @@ namespace TripPlanningAssistant.API
             builder.Services.Configure<AWSBedrockConfigOptions>(builder.Configuration.GetSection(nameof(AWSBedrockConfigOptions)));
             builder.Services.Configure<SupabaseDbOptions>(builder.Configuration.GetSection(nameof(SupabaseDbOptions)));
 
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+
             builder.Services.AddTransient((provider) =>
             {
                 var option = provider.GetService<IOptions<SupabaseDbOptions>>();
@@ -25,6 +29,12 @@ namespace TripPlanningAssistant.API
             });
 
             var app = builder.Build();
+
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+            }
 
             // Configure the HTTP request pipeline.
 
