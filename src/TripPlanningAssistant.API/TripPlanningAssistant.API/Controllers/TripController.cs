@@ -38,5 +38,31 @@ namespace TripPlanningAssistant.API.Controllers
             var convertedResult = JsonSerializer.Deserialize<IEnumerable<BaseModel>>(result.Content ?? "");
             return convertedResult?.Select(x => x.sentences) ?? new List<string>();
         }
+
+        [HttpPost("attractions")]
+        public async Task<bool> EmbedAttractions(string input)
+        {
+            var result = await _awsBedrockService.GenerateEmbeddingsResponseAsync(input);
+            var data = new Attraction()
+            {
+                Sentences = input,
+                Embedding = result
+            };
+            var response = _client.From<Attraction>().Insert(data);
+            return response.IsCompletedSuccessfully;
+        }
+
+        [HttpPost("flights")]
+        public async Task<bool> EmbedFlightCosts(string input)
+        {
+            var result = await _awsBedrockService.GenerateEmbeddingsResponseAsync(input);
+            var data = new FlightCost()
+            {
+                Sentences = input,
+                Embedding = result
+            };
+            var response = _client.From<FlightCost>().Insert(data);
+            return response.IsCompletedSuccessfully;
+        }
     }
 }
