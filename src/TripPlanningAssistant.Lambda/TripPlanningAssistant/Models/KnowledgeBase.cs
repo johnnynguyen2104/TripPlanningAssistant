@@ -1,6 +1,6 @@
 ﻿namespace TripPlanningAssistant.Models
 {
-    public class BaseModel
+    public class KnowledgeBase
     {
         public int id { get; set; }
 

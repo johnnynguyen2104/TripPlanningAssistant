@@ -1,9 +1,17 @@
-﻿namespace TripPlanningAssistant.API.Models
-{
-    public class BaseModel
-    {
-        public int id { get; set; }
+﻿using Supabase.Postgrest.Attributes;
 
-        public string sentences { get; set; } = string.Empty;
+namespace TripPlanningAssistant.API.Models
+{
+    [Table("knowledges_base")]
+    public class KnowledgeBase : Supabase.Postgrest.Models.BaseModel
+    {
+        [PrimaryKey("id", false)]
+        public int Id { get; set; }
+
+        [Column("content")]
+        public string Content { get; set; }
+
+        [Column("embedding")]
+        public string Embedding { get; set; }
     }
 }

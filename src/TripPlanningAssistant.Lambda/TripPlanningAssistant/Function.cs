@@ -72,7 +72,7 @@ public class Function
             match_count = count, // choose the number of matches
         });
 
-        var convertedResult = JsonSerializer.Deserialize<IEnumerable<BaseModel>>(result.Content ?? "");
+        var convertedResult = JsonSerializer.Deserialize<IEnumerable<KnowledgeBase>>(result.Content ?? "");
         return convertedResult?.Select(x => x.sentences) ?? new List<string>();
     }
 }
