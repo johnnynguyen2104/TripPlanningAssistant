@@ -110,7 +110,7 @@ $BODY$;
 6. Finally, replace the connection string to the project's code.
 
 ### AWS Bedrock Preparation
-1. Create new AWS Bedrock Agent -> [https://docs.aws.amazon.com/bedrock/latest/userguide/agents-create.html#:~:text=Console-,To%20create%20an%20agent,Agents%20section%2C%20choose%20Create%20Agent](here)
+1. Create new AWS Bedrock Agent -> [here](https://docs.aws.amazon.com/bedrock/latest/userguide/agents-create.html#:~:text=Console-,To%20create%20an%20agent,Agents%20section%2C%20choose%20Create%20Agent)
 2. Choose Claude 3 Sonnet.
 3. More important, you need to add the instructions for the Agent. If you don't your agent will have no idea what action group or actions should be taken. Sample below:
 ```sh
