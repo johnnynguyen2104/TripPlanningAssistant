@@ -18,7 +18,7 @@ Traveling to new countries often comes with questions and uncertainties. Travel 
 5. Community Engagement: Connect with a community of fellow travelers and locals to share experiences, tips, and recommendations.
    
 ### Next Phase Features
-- Conversation storage and user authentication.
+- Conversation history and user authentication.
   
 - Able to book/rent flight, hotels, restaurants, etc... (include booking/canceling/tracking).
 
