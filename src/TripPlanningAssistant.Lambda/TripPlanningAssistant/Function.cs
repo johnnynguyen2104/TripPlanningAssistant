@@ -16,10 +16,11 @@ public class Function
         context.Logger.LogInformation(input.ToString());
         var inputObject = input.ToObject<AgentObject>();
 
-        object responseBody;
-        if(inputObject is not null && inputObject.function == "sematic_search")
+        object responseBody = new { };
+        List<string> results = new List<string>();
+        if (inputObject is not null && inputObject.function == "sematic_search")
         {
-            List<string> results = new List<string>();
+            
             string? userInput = inputObject.parameters.FirstOrDefault(x => x.name == "input")?.value
                 ?? inputObject.inputText;
 
@@ -27,10 +28,9 @@ public class Function
 
             responseBody = new { TEXT = new { body = JsonSerializer.Serialize(results) }};
         }
-        else
-        {
-            responseBody = new { TEXT = new { body = "Sorry! I will need to ask my creator for more knowledge base because I do have needed information to process your requests."} };
-        }
+        
+        if(results.Count == 0)
+            responseBody = new { TEXT = new { body = "Sorry! I will need to ask my creator for more knowledge base because I do have needed information to process your requests." } };
 
         var response = new
         {
@@ -76,5 +76,3 @@ public class Function
         return convertedResult?.Select(x => x.sentences) ?? new List<string>();
     }
 }
-
-public record Casing(string Lower, string Upper);
