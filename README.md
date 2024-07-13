@@ -37,6 +37,7 @@ Configure your AWS credentials using the AWS CLI:
 aws configure
 ```
 Provide your accessKey and secretKey accordingly from you AWS account.
+Also copy and paste your AWS credential and Supabase key into the `Function.cs`.
 ## Deployment
 ### Build the Application
 ```sh
