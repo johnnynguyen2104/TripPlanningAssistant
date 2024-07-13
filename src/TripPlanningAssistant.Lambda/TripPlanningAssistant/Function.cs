@@ -23,8 +23,7 @@ public class Function
             string? userInput = inputObject.parameters.FirstOrDefault(x => x.name == "input")?.value
                 ?? inputObject.inputText;
 
-            results.AddRange(SematicSearch(userInput, "match_flights").Result);
-            results.AddRange(SematicSearch(userInput, "match_attractions").Result);
+            results.AddRange(SematicSearch(userInput, "match_knowledges").Result);
 
             responseBody = new { TEXT = new { body = JsonSerializer.Serialize(results) }};
         }
