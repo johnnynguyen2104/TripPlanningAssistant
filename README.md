@@ -26,7 +26,7 @@ Traveling to new countries often comes with questions and uncertainties. Travel 
 
 - Support images generation to be more helpful.
 
-- Having a UI for better user experiences and interactions.
+- Having better UIs for user experiences and interactions.
 
 - Support voice translation to avoid language barrier issue.
 
@@ -106,8 +106,28 @@ AS $BODY$
   limit least(match_count, 200);
 $BODY$;
 ```
-5. Finally, replace the connection string to the project's code.
+5. You can use the `knowledges_base` csv as your base data. (In Data folder within the repo) or we have a seperate API to add knowledges into the database.
+6. Finally, replace the connection string to the project's code.
 
+### AWS Bedrock Preparation
+1. Create new AWS Bedrock Agent -> [https://docs.aws.amazon.com/bedrock/latest/userguide/agents-create.html#:~:text=Console-,To%20create%20an%20agent,Agents%20section%2C%20choose%20Create%20Agent](here)
+2. Choose Claude 3 Sonnet.
+3. More important, you need to add the instructions for the Agent. If you don't your agent will have no idea what action group or actions should be taken. Sample below:
+```sh
+You are a travel agent, helping clients to plan their trip from their inputs,
+retrieve flights or attractions or foods or restaurants.
+```
+4. Create an action group and name it as `travel_lookup_action_group` and add an action to do the sematic search as `sematic_search` with a parameter as `input` (string type). Adding a description for the action group also good, you can try:
+```sh
+Actions only for getting flights, accomodations, foods, restaurants information and not for knowledge obtion or save to database.
+```
+5. In order to allow AWS Bedrock and AWS Lambda communicate each other, you will need to set `Lambda:InvokeFunction` permission for the Agent(go to the lambda -> Configurations -> Permissions -> Add a Resource-based policy statements)
+```sh
+StatmentId-> can be something unique.
+Principal-> bedrock.amazonaws.com
+Action-> lambda:InvokeFunction
+Conditions-> use the arn from the agent (arn:aws:bedrock:us-west-2:{account_id}:agent/{agent_id})
+```
 ### Clone the Repository
 
 ```sh
@@ -132,24 +152,27 @@ Also copy and paste your AWS credential and Supabase key into the `Function.cs`.
 ```sh
 dotnet build
 ```
-### Deploy to AWS Lambda
-Use the AWS CLI or AWS Management Console to create and deploy your Lambda function.
-Using AWS CLI
-1. Package the application:
-```sh
-dotnet lambda package -o your-lambda-package.zip
-```
-2. Deploy the packaged application:
-```sh
-aws lambda update-function-code --function-name your-lambda-function-name --zip-file fileb://your-lambda-package.zip
-```
-### Usage
+### Deploy Sematic Search to AWS Lambda
+1. Install AWS Toolkit for Visual studio -> https://docs.aws.amazon.com/toolkit-for-visual-studio/latest/user-guide/setup.html.
+2. Open your Visual Studio and select the WebApp project.
+3. You will see the `Publish to AWS Lambda` option and select it. (ensure your aws profile has been saved in your local machine)
+4. Select Zip for the Package type and choose `Create new function` if this is the first deploy.
+5. Use `TripPlanningAssistant::TripPlanningAssistant.Function::FunctionHandler` as a function endpoint for Handler.
+6. Click Upload.
+   
 #### Invoking the Lambda Function
 You can invoke your Lambda function using the AWS Management Console, AWS CLI, or programmatically.
 Using AWS CLI
 ```sh
 aws lambda invoke --function-name your-lambda-function-name output.json
 ```
+Or you can test it on a test sreen after deploying the AWS lambda using AWS Toolkit on VS.
+### Deploy WebApp to AWS Elastic Beanstalk
+1. Install AWS Toolkit for Visual studio -> https://docs.aws.amazon.com/toolkit-for-visual-studio/latest/user-guide/setup.html. (skip it if installed)
+2. Open your Visual Studio and select the WebApp project.
+3. You will see the `Publish to AWS` option and select it. (ensure your aws profile has been saved in your local machine)
+4. Select Elastic Beanstalk (linux) and click on Publish button.
+   
 ### Monitoring and Logging
 Monitor and view logs for your Lambda function using AWS CloudWatch.
 
