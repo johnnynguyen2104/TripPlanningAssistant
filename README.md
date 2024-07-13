@@ -31,9 +31,17 @@ Traveling to new countries often comes with questions and uncertainties. Travel 
 - Support voice translation to avoid language barrier issue.
 
 - Buidling self-traveling experiences module, where user can share their experiences after a trip and will be used as a knowledge base for the agent.
+## Limitations
+
+Currently the travel agent is still in an early stage, so data range will be limited. The added knowledges are mainly for Singapore right now.
+Some sample inputs that we would advise:
+- I need a plan to Singapore for 3 days, can you give me a plan?
+- Where to eat in Singapore?
+- How Singaporean enjoy their weekend?
+- What are the transportation in Singapore?
 
 ## How It Works
-Step 1: Choose Your Destination: Select your destination city or country.
+Step 1: Input a destination (city/country) and your plan's duration.
 
 Step 2: Chat with Your Local Agent: Start a conversation with your assigned local agent who will guide you throughout your journey.
 
