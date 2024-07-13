@@ -25,5 +25,6 @@
     "tracing-mode"                 : "PassThrough",
     "environment-variables"        : "",
     "dockerfile"                   : "Dockerfile",
-    "image-tag"                    : ""
+    "image-tag"                    : "",
+    "function-description"         : ""
 }

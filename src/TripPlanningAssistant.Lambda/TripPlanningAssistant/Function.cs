@@ -1,35 +1,64 @@
 using Amazon.Lambda.Core;
+using Newtonsoft.Json.Linq;
 using System.Text.Json;
 using TripPlanningAssistant.API.Services;
 using TripPlanningAssistant.Models;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
-[assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
+[assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
 
 namespace TripPlanningAssistant;
 
 public class Function
 {
-    
-    /// <summary>
-    /// A simple function that takes a string and returns both the upper and lower case version of the string.
-    /// </summary>
-    /// <param name="input">The event for the Lambda function handler to process.</param>
-    /// <param name="context">The ILambdaContext that provides methods for logging and describing the Lambda environment.</param>
-    /// <returns></returns>
-    public Casing FunctionHandler(string input, ILambdaContext context)
+    public object FunctionHandler(JObject input, ILambdaContext context)
     {
-        Console.WriteLine(input);
-        return new Casing(input.ToLower(), input.ToUpper());
+        context.Logger.LogInformation(input.ToString());
+        var inputObject = input.ToObject<AgentObject>();
+
+        object responseBody;
+        if(inputObject is not null && inputObject.function == "sematic_search")
+        {
+            List<string> results = new List<string>();
+            string? userInput = inputObject.parameters.FirstOrDefault(x => x.name == "input")?.value
+                ?? inputObject.inputText;
+
+            results.AddRange(SematicSearch(userInput, "match_flights").Result);
+            results.AddRange(SematicSearch(userInput, "match_attractions").Result);
+
+            responseBody = new { TEXT = new { body = JsonSerializer.Serialize(results) }};
+        }
+        else
+        {
+            responseBody = new { TEXT = new { body = "Sorry! I will need to ask my creator for more knowledge base because I do have needed information to process your requests."} };
+        }
+
+        var response = new
+        {
+            response = new
+            {
+                actionGroup = inputObject.actionGroup,
+                function = inputObject.function,
+                functionResponse = new
+                {
+                    responseBody = responseBody
+                }
+            },
+            messageVersion = inputObject.messageVersion
+        };
+
+        context.Logger.LogInformation(response.ToString());
+
+        return response;
     }
 
-    public async Task<IEnumerable<string>> SematicSearch(string input, string targetFunction, Single matchThreshold = 0.5f, int count = 10)
+    public async Task<IEnumerable<string>> SematicSearch(string input, string targetFunction, Single matchThreshold = 0.6f, int count = 3)
     {
+        // TODO: Remove the hardcoded credential here and put it to somewhre safer.
         var awsBedrockService = new AWSBedrockService(new Options.AWSBedrockConfigOptions()
         {
-            AccessKeyId = "ASIAZ5JPWZFCFRNTPJPB",
-            SecretAccessKey = "ToyiunqMXEj4Z26xdVG9OpyzRHS8qUYK/K0GrIpp",
-            Token = "IQoJb3JpZ2luX2VjEKX//////////wEaCXVzLWVhc3QtMSJHMEUCIQCMLOPL0DO5hvFoYZG0hcFIKONjCj6pT2Q1IZox+4sjkwIgaIhxnAg84rbi2MMXxORTqjPUn4+2nC4s7NkqteJ+yJcqmQIIbhABGgw2ODEzODkyNDY3ODgiDKR4w1VxQgldJeLFYCr2AeKY+PceqZk7vBU98WkZ70TyynXs+Tdo/WD9qKg5Za0rUDnymvQbnpPUydOzjBk35FsplsRiRd910W4Ze3rvL6uB2Y6qdfVjuhsdJoXUIpDCXpd60I7q2ZH1x9TnnCRVQ2wi/l48xV/tzFjhsiAYUP7zZxUGimzHtlBsjBMrqrYyKruoyF8ohtbSSBfc2cWEX1oXloLc38SYK8LuvUU6R0V6zwq2ksZZrmBcnTKpv5b+w1BAZGIOt2zblCfIZadOOrYaiHCMV8k9UnLZZHuJ2eGmG6pm/3X+a0vYqsLAoK567hHbRJfA61F9QJPTqaZYd3MgMFaR9jC/7cK0BjqdAalpVGlwgNfdF8Wqu90c0raRi8aHcCnUG24OgSoQKA2fAnBUfQPrZ1azDITbn3xrdD/f/v7UxUpsygxy6zvTCqandkF14LKGVquqSaab1mq2OyBSiOwnDPBvflFsw5wwV9Au+UwIvsOljHMgKQBfOi2izlUpAHNAeTEEHjqgBWp/o+8nMQPMRRxcfZR8msaPoHtnNU3qlBKSkApBSTM=",
+            AccessKeyId = "AKIAZ5JPWZFCM2QOMPP7",
+            SecretAccessKey = "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",
             EmbeddingModelId = "amazon.titan-embed-text-v1",
             Region = "us-west-2"
         });
