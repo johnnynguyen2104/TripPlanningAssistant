@@ -1,4 +1,4 @@
-# Introduction Of Travel Agent Application (TravelWithLocal)
+# Introduction Of Travel Agent Application (TravelWLocal)
 
 ## Overview
 
@@ -18,6 +18,8 @@ Traveling to new countries often comes with questions and uncertainties. Travel 
 5. Community Engagement: Connect with a community of fellow travelers and locals to share experiences, tips, and recommendations.
    
 ### Next Phase Features
+- Conversation history and user authentication.
+  
 - Able to book/rent flight, hotels, restaurants, etc... (include booking/canceling/tracking).
 
 - Able to access to more local knowledges about traveling, sports (fishing, hiking, cycling, etc), location/shop/food reviews.
@@ -29,9 +31,17 @@ Traveling to new countries often comes with questions and uncertainties. Travel 
 - Support voice translation to avoid language barrier issue.
 
 - Buidling self-traveling experiences module, where user can share their experiences after a trip and will be used as a knowledge base for the agent.
+## Limitations
+
+Currently the travel agent is still in an early stage, so data range will be limited. The added knowledges are mainly for Singapore right now.
+Some sample inputs that we would advise:
+- I need a plan to Singapore for 3 days, can you give me a plan?
+- Where to eat in Singapore?
+- How Singaporean enjoy their weekend?
+- What are the transportation in Singapore?
 
 ## How It Works
-Step 1: Choose Your Destination: Select your destination city or country.
+Step 1: Input a destination (city/country) and your plan's duration.
 
 Step 2: Chat with Your Local Agent: Start a conversation with your assigned local agent who will guide you throughout your journey.
 
@@ -44,6 +54,9 @@ Step 3: Explore with Confidence: Receive personalized recommendations and assist
 
 - Enhanced Travel Experience: Maximize your time abroad with curated recommendations and cultural insights, making every moment count.
 # Techical Portion
+## Technologies
+- .NET, AWS Lambda, AWS Bedrock, Supabase.
+  
 ## Prerequisites
 
 Before you begin, ensure you have met the following requirements:
