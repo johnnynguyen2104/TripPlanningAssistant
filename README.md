@@ -73,6 +73,41 @@ Before you begin, ensure you have met the following requirements:
 
 ## Getting Started
 
+### Supabase Preparation
+1. Go to https://database.new/
+2. Create new Organization and obtain the connection string or you can create table on the webpage.
+3. Run this code to create the `knowledges_base` table on your database.
+```sh
+CREATE TABLE IF NOT EXISTS public.knowledges_base
+(
+    id integer NOT NULL DEFAULT nextval('knowledges_base_id_seq'::regclass),
+    content text COLLATE pg_catalog."default" NOT NULL,
+    embedding vector(1536),
+    CONSTRAINT knowledges_base_pkey PRIMARY KEY (id)
+)
+```
+4. Next, you will need a create a sematic search function. Execute the code below on your database.
+```sh
+CREATE OR REPLACE FUNCTION public.match_knowledges(
+	query_embedding vector,
+	match_threshold double precision,
+	match_count integer)
+    RETURNS SETOF knowledges_base 
+    LANGUAGE 'sql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+    ROWS 1000
+
+AS $BODY$
+  select *
+  from knowledges_base
+  where knowledges_base.embedding <=> query_embedding < 1 - match_threshold
+  order by knowledges_base.embedding <=> query_embedding asc
+  limit least(match_count, 200);
+$BODY$;
+```
+5. Finally, replace the connection string to the project's code.
+
 ### Clone the Repository
 
 ```sh
