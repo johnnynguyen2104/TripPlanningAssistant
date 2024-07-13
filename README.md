@@ -128,6 +128,9 @@ Principal-> bedrock.amazonaws.com
 Action-> lambda:InvokeFunction
 Conditions-> use the arn from the agent (arn:aws:bedrock:us-west-2:{account_id}:agent/{agent_id})
 ```
+### Credential & IAM
+You need to create your own IAM user and generate an access key from it. Don't forget to set necessary permission such as AWSBedrockFullAccess. This step will allow you obtain your own creadential and allow the WebApp communicate with the AWS Bedrock agent.
+
 ### Clone the Repository
 
 ```sh
