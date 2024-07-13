@@ -44,6 +44,9 @@ Step 3: Explore with Confidence: Receive personalized recommendations and assist
 
 - Enhanced Travel Experience: Maximize your time abroad with curated recommendations and cultural insights, making every moment count.
 # Techical Portion
+## Technologies
+- .NET, AWS Lambda, AWS Bedrock, Supabase.
+  
 ## Prerequisites
 
 Before you begin, ensure you have met the following requirements:
