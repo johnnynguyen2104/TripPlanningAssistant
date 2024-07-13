@@ -1,4 +1,4 @@
-﻿using System;namespace TripPlanningAssistant.Models
+﻿namespace TripPlanningAssistant.Common.Models
 {
     public class AgentObject
     {

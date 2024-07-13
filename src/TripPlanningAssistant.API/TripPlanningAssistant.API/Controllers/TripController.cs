@@ -44,12 +44,13 @@ namespace TripPlanningAssistant.API.Controllers
         {
             var result = await _awsBedrockService.GenerateEmbeddingsResponseAsync(input);
             var data = new KnowledgeBase()
-            {
+            { 
+                Id = 0,
                 Content = input,
                 Embedding = result
             };
-            var response = _client.From<KnowledgeBase>().Insert(data);
-            return response.IsCompletedSuccessfully;
+            var response = await _client.From<KnowledgeBase>().Insert(data);
+            return true;
         }
     }
 }

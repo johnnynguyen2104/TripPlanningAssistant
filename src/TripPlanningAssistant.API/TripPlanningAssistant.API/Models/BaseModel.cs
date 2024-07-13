@@ -5,7 +5,7 @@ namespace TripPlanningAssistant.API.Models
     [Table("knowledges_base")]
     public class KnowledgeBase : Supabase.Postgrest.Models.BaseModel
     {
-        [PrimaryKey("id", false)]
+        [PrimaryKey("id")]
         public int Id { get; set; }
 
         [Column("content")]

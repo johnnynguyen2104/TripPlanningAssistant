@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.BedrockAgent" Version="3.7.311.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TripPlanningAssistant.Common\TripPlanningAssistant.Common.csproj" />
+  </ItemGroup>
+
+</Project>

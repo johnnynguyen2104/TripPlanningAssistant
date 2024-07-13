@@ -2,7 +2,8 @@ using Amazon.Lambda.Core;
 using Newtonsoft.Json.Linq;
 using System.Text.Json;
 using TripPlanningAssistant.API.Services;
-using TripPlanningAssistant.Models;
+using TripPlanningAssistant.Common.Models;
+using TripPlanningAssistant.Common.Options;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
 [assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
@@ -54,7 +55,7 @@ public class Function
     public async Task<IEnumerable<string>> SematicSearch(string input, string targetFunction, Single matchThreshold = 0.6f, int count = 3)
     {
         // TODO: Remove the hardcoded credential here and put it to somewhre safer.
-        var awsBedrockService = new AWSBedrockService(new Options.AWSBedrockConfigOptions()
+        var awsBedrockService = new AWSBedrockService(new AWSBedrockConfigOptions()
         {
             AccessKeyId = "AKIAZ5JPWZFCM2QOMPP7",
             SecretAccessKey = "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",
@@ -73,6 +74,6 @@ public class Function
         });
 
         var convertedResult = JsonSerializer.Deserialize<IEnumerable<KnowledgeBase>>(result.Content ?? "");
-        return convertedResult?.Select(x => x.sentences) ?? new List<string>();
+        return convertedResult?.Select(x => x.content) ?? new List<string>();
     }
 }

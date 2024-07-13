@@ -1,6 +1,6 @@
 ﻿using Supabase;
 
-namespace TripPlanningAssistant.Options
+namespace TripPlanningAssistant.Common.Options
 {
     public class SupabaseDbOptions
     {

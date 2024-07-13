@@ -1,10 +1,15 @@
 ﻿using System.Text.Json.Nodes;
 using System.Text.Json;
 using Amazon.BedrockRuntime;
-using TripPlanningAssistant.Options;
 using Amazon.Runtime;
 using Amazon;
 using Amazon.BedrockRuntime.Model;
+using TripPlanningAssistant.Common.Options;
+using Amazon.BedrockAgentRuntime;
+using Amazon.BedrockAgentRuntime.Model;
+using InferenceConfiguration = Amazon.BedrockRuntime.Model.InferenceConfiguration;
+using System.Text;
+using Microsoft.Extensions.Options;
 
 namespace TripPlanningAssistant.API.Services
 {
@@ -12,6 +17,16 @@ namespace TripPlanningAssistant.API.Services
     {
         private readonly AmazonBedrockRuntimeClient _bedrockClient;
         private readonly AWSBedrockConfigOptions _config;
+        private readonly AmazonBedrockAgentRuntimeClient _bedrockAgentClient;
+
+        public AWSBedrockService(IOptions<AWSBedrockConfigOptions> config)
+        {
+            _config = config.Value;
+            var credentials = new BasicAWSCredentials(_config.AccessKeyId, _config.SecretAccessKey);
+            var region = RegionEndpoint.GetBySystemName(_config.Region);
+            _bedrockClient = new AmazonBedrockRuntimeClient(credentials, region);
+            _bedrockAgentClient = new AmazonBedrockAgentRuntimeClient(credentials, region);
+        }
 
         public AWSBedrockService(AWSBedrockConfigOptions config)
         {
@@ -19,6 +34,30 @@ namespace TripPlanningAssistant.API.Services
             var credentials = new BasicAWSCredentials(_config.AccessKeyId, _config.SecretAccessKey);
             var region = RegionEndpoint.GetBySystemName(_config.Region);
             _bedrockClient = new AmazonBedrockRuntimeClient(credentials, region);
+            _bedrockAgentClient = new AmazonBedrockAgentRuntimeClient(credentials, region);
+        }
+
+        public async Task<string> TalkToAgent(string input)
+        {
+            var response = await _bedrockAgentClient.InvokeAgentAsync(new InvokeAgentRequest()
+            {
+                AgentId = "N4KCBYD26S",
+                AgentAliasId = "3GQ86ILTDD",
+                SessionId = Guid.NewGuid().ToString(),
+                InputText = input
+            });
+
+            if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
+            {
+                MemoryStream output = new MemoryStream();
+                foreach (Amazon.BedrockAgentRuntime.Model.PayloadPart item in response.Completion)
+                {
+                    item.Bytes.CopyTo(output);
+                }
+                return Encoding.UTF8.GetString(output.ToArray());
+            }
+
+            return "Couldn't connect to the Agent at the moment. Please try again later.";
         }
 
         public async Task<string> GenerateEmbeddingsResponseAsync(string input, InferenceConfiguration? inferenceConfiguration = null)
