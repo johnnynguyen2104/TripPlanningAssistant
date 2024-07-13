@@ -3,7 +3,7 @@
 ## Overview
 
 Your Co-Travel Friend
-Traveling to new countries often comes with questions and uncertainties. Travel with Local is your go-to companion designed to enhance your travel experience by providing personalized assistance and guidance from locals, right at your fingertips.
+Traveling to new countries often comes with questions and uncertainties. TravelWith is your go-to companion designed to enhance your travel experience by providing personalized assistance and guidance from locals, right at your fingertips.
 
 ## Features
 ### Key Features:
