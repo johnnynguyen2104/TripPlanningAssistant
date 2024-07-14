@@ -53,7 +53,7 @@ Step 3: Explore with Confidence: Receive personalized recommendations and assist
 - Real-Time Support: Resolve travel-related queries and challenges promptly with the help of a knowledgeable local agent.
 
 - Enhanced Travel Experience: Maximize your time abroad with curated recommendations and cultural insights, making every moment count.
-# Techical Portion
+# Technical Portion
 ## Technologies
 - .NET, AWS Lambda, AWS Bedrock, Supabase.
   
