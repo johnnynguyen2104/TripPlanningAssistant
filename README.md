@@ -56,7 +56,10 @@ Step 3: Explore with Confidence: Receive personalized recommendations and assist
 # Technical Portion
 ## Technologies
 - .NET, AWS Lambda, AWS Bedrock, Supabase.
-  
+
+## High-level Architecture
+![Alt text](AWS-Bedrock-TravelWith-Architecture.svg)
+
 ## Prerequisites
 
 Before you begin, ensure you have met the following requirements:
